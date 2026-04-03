@@ -164,36 +164,23 @@ Single-ping ultrasonic readings are susceptible to acoustic reflections, surface
 ```mermaid
 flowchart TB
 
-  %% Sensors
   subgraph Sensors
-    A[HC-SR04<br/>Ultrasonic Transducer]
-    B[DHT11<br/>Temp & Humidity Sensor]
+    A[HC-SR04\nUltrasonic Transducer]
+    B[DHT11\nTemp & Humidity Sensor]
   end
 
-  %% Controller
   subgraph Controller
-    C[Arduino Nano<br/><br/>
-    1. Read DHT11 (T, H)<br/>
-    2. v = 331.4 + (0.606 × T) + (0.0124 × H)<br/>
-    3. Ping median (n=5)<br/>
-    4. d = (ping × v) / 2<br/>
-    5. Apply calibration offset<br/>
-    6. Validate range [2, 400] cm]
+    C[Arduino Nano\n\n1. Read DHT11 (T, H)\n2. v = 331.4 + (0.606 * T) + (0.0124 * H)\n3. Ping median (n=5)\n4. d = (ping * v) / 2\n5. Apply calibration offset\n6. Validate range 2-400 cm]
   end
 
-  %% Output
   subgraph Output
-    D[16×2 I2C LCD<br/><br/>
-    Distance | Temp | Humidity<br/>
-    Speed of Sound (m/s)]
+    D[16x2 I2C LCD\n\nDistance | Temp | Humidity\nSpeed of Sound (m/s)]
   end
 
-  %% Connections
   A --> C
   B --> C
   C --> D
 
-  %% Styling
   classDef sensor fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px;
   classDef controller fill:#FFF3E0,stroke:#FB8C00,stroke-width:2px;
   classDef output fill:#E8F5E9,stroke:#43A047,stroke-width:2px;
