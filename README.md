@@ -161,53 +161,47 @@ Single-ping ultrasonic readings are susceptible to acoustic reflections, surface
 ---
 
 ## System Architecture
-<div style="font-family: Arial, sans-serif; display: flex; justify-content: center;">
-  <div style="border: 2px solid #333; padding: 20px; border-radius: 12px; max-width: 800px; background: #f9f9fb; box-shadow: 0 6px 20px rgba(0,0,0,0.08);">
+```mermaid
+flowchart TB
 
-    <h2 style="text-align: center; margin-top: 0;">ECAR System Architecture</h2>
+  %% Sensors
+  subgraph Sensors
+    A[HC-SR04<br/>Ultrasonic Transducer]
+    B[DHT11<br/>Temp & Humidity Sensor]
+  end
 
-    <!-- Sensors -->
-    <div style="display: flex; justify-content: space-around; margin-bottom: 20px; text-align: center;">
-      <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff;">
-        <strong>HC-SR04</strong><br/>
-        Ultrasonic<br/>Transducer
-      </div>
+  %% Controller
+  subgraph Controller
+    C[Arduino Nano<br/><br/>
+    1. Read DHT11 (T, H)<br/>
+    2. v = 331.4 + (0.606 × T) + (0.0124 × H)<br/>
+    3. Ping median (n=5)<br/>
+    4. d = (ping × v) / 2<br/>
+    5. Apply calibration offset<br/>
+    6. Validate range [2, 400] cm]
+  end
 
-      <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff;">
-        <strong>DHT11</strong><br/>
-        Temp/Humidity<br/>Sensor
-      </div>
-    </div>
+  %% Output
+  subgraph Output
+    D[16×2 I2C LCD<br/><br/>
+    Distance | Temp | Humidity<br/>
+    Speed of Sound (m/s)]
+  end
 
-    <div style="text-align: center; font-size: 24px;">⬇️</div>
+  %% Connections
+  A --> C
+  B --> C
+  C --> D
 
-    <!-- Arduino -->
-    <div style="margin: 20px auto; padding: 15px; border: 2px solid #333; border-radius: 10px; background: #ffffff;">
-      <strong>Arduino Nano</strong>
-      <ol style="text-align: left; margin-top: 10px;">
-        <li>Read DHT11 (T, H)</li>
-        <li>Compute v = 331.4 + (0.606 × T) + (0.0124 × H)</li>
-        <li>Ping median (n = 5)</li>
-        <li>d = (ping × v) / 2</li>
-        <li>Apply calibration offset</li>
-        <li>Validate range [2, 400] cm</li>
-      </ol>
-    </div>
+  %% Styling
+  classDef sensor fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px;
+  classDef controller fill:#FFF3E0,stroke:#FB8C00,stroke-width:2px;
+  classDef output fill:#E8F5E9,stroke:#43A047,stroke-width:2px;
 
-    <div style="text-align: center; font-size: 24px;">⬇️</div>
-
-    <!-- Output -->
-    <div style="margin: 20px auto; padding: 15px; border: 2px solid #333; border-radius: 10px; background: #fff;">
-      <strong>16×2 I2C LCD</strong>
-      <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
-        <li>Distance | Temp | Humidity</li>
-        <li>Speed of Sound (m/s)</li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-
+  class A,B sensor;
+  class C controller;
+  class D output;
+```
 ---
 
 ## Hardware Components
