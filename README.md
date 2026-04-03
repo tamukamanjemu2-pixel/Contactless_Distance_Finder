@@ -226,26 +226,26 @@ flowchart TD
   B[Read Humidity H]
   C[Read Temperature T]
 
-  D{Is H or T invalid?}
+  D{Invalid data}
 
   E[Display Sensor Error]
   F[Continue Loop]
 
-  G[Compute speed of sound v]
+  G[Compute speed of sound]
 
-  H[Get sonar ping median (5 samples)]
+  H[Get sonar median ping]
 
-  I[Compute distance in cm]
+  I[Compute distance]
 
-  J[Apply calibration offset]
+  J[Apply calibration]
 
   K{Distance in range 2 to 400}
 
   L[Display NaN]
 
-  M[Display distance, T, H, v]
+  M[Display distance T H and speed]
 
-  N[Repeat Loop]
+  N[Loop again]
 
   %% Flow
   A --> B --> C --> D
