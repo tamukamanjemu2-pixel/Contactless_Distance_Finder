@@ -218,27 +218,53 @@ flowchart TB
 
 ### Core Algorithm (Pseudocode)
 
+```mermaid
+flowchart TD
+
+  A[Start Loop]
+
+  B[Read Humidity H]
+  C[Read Temperature T]
+
+  D{Is H or T invalid?}
+
+  E[Display Sensor Error]
+  F[Continue Loop]
+
+  G[Compute speed of sound v]
+
+  H[Get sonar ping median (5 samples)]
+
+  I[Compute distance in cm]
+
+  J[Apply calibration offset]
+
+  K{Distance in range 2 to 400}
+
+  L[Display NaN]
+
+  M[Display distance, T, H, v]
+
+  N[Repeat Loop]
+
+  %% Flow
+  A --> B --> C --> D
+  D -- Yes --> E --> F --> N
+  D -- No --> G --> H --> I --> J --> K
+  K -- No --> L --> N
+  K -- Yes --> M --> N
+
+  %% Styling
+  classDef input fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px;
+  classDef process fill:#FFF3E0,stroke:#FB8C00,stroke-width:2px;
+  classDef decision fill:#FCE4EC,stroke:#D81B60,stroke-width:2px;
+  classDef output fill:#E8F5E9,stroke:#43A047,stroke-width:2px;
+
+  class A,B,C input;
+  class G,H,I,J process;
+  class D,K decision;
+  class E,L,M output;
 ```
-LOOP:
-  H ← dht.readHumidity()
-  T ← dht.readTemperature()
-
-  IF isnan(H) OR isnan(T):
-    display("Sensor Error")
-    CONTINUE
-
-  v ← 331.4 + (0.606 × T) + (0.0124 × H)   // m/s
-
-  ping_us ← sonar.ping_median(5)             // microseconds, n=5
-  distance ← (ping_us / 1000000.0) × v × 100 / 2  // cm
-  distance ← distance - 3                    // calibration offset
-
-  IF distance < 2 OR distance > 400:
-    display_distance("NaN")
-  ELSE:
-    display(distance, T, H, v)
-```
-
 ### Calibration Offset
 
 A hardcoded offset of `-3 cm` is applied to the final distance calculation. This accounts for:
