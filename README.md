@@ -165,16 +165,16 @@ Single-ping ultrasonic readings are susceptible to acoustic reflections, surface
 flowchart TB
 
   subgraph Sensors
-    A[HC-SR04\nUltrasonic Transducer]
-    B[DHT11\nTemp & Humidity Sensor]
+    A[HC-SR04 Ultrasonic]
+    B[DHT11 Temp Humidity]
   end
 
   subgraph Controller
-    C[Arduino Nano\n\n1. Read DHT11 (T, H)\n2. v = 331.4 + (0.606 * T) + (0.0124 * H)\n3. Ping median (n=5)\n4. d = (ping * v) / 2\n5. Apply calibration offset\n6. Validate range 2-400 cm]
+    C[Arduino Nano\n1 Read DHT11\n2 Compute sound speed\n3 Median ping\n4 Calculate distance\n5 Apply calibration\n6 Validate range 2 to 400 cm]
   end
 
   subgraph Output
-    D[16x2 I2C LCD\n\nDistance | Temp | Humidity\nSpeed of Sound (m/s)]
+    D[16x2 I2C LCD\nDistance Temp Humidity\nSpeed of Sound]
   end
 
   A --> C
